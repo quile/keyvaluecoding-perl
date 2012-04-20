@@ -1,12 +1,11 @@
 package TestKeyValueCodingOnObject;
 
-use common::sense;
+use strict;
 
 use base qw(
     Test::Class
 );
 
-use Data::Dumper;
 use Test::More;
 
 sub setUp : Test(startup) {

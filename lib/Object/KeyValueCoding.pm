@@ -657,7 +657,7 @@ I always find myself frustrated by its absence, and find myself jumping
 through all kinds of stupid hoops just to do things that would be dead-simple
 if key-value coding were available to me.
 
-So here is a Perl implementations of KVC that you can
+So here is a Perl implementation of KVC that you can
 glom onto your objects, or even glom onto everything in your system,
 and KVC will be available in all its glory (well, some of its glory...
 see below).
@@ -785,6 +785,13 @@ Note that the arguments themselves can be arbitrarily long key-paths.
 
 =over
 
+=item * Better support for Moose
+
+Since Moose is pretty much the defacto way now of doing OO
+in Perl, KVC should detect Moose and play nicer with it.  It means
+that it could use the Class::MOP features to perform attribute
+manipulation, so that will be fun.
+
 =item * Error handling
 
 Right now you're on your own to test for errors and trap explosions.
@@ -797,6 +804,17 @@ will need some cleaning up and bulletproofing to harden it a bit.
 
 
 =back
+
+=head1 HISTORY
+
+This implementation originated as part of the Idealist Framework
+(https://github.com/quile/if-framework) over 10 years
+ago.  It was loosely based on the NSKeyValueCoding protocol found
+on NeXTStep/OpenStep (at that time) and now Cocoa/iOS.  This is the
+reason why the code is a bit hairy - its very old (predating pretty much
+every advance in Perl...).  But that works in its favour, because it
+means it will work well with most Perl objects and isn't bound to
+an OO implementation like Moose.
 
 
 =head1 BUGS

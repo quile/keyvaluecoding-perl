@@ -305,6 +305,8 @@ sub keyPathElementsForPath {
     my $keyPathElements = [];
     while (1) {
         my ($firstElement, $rest) = split(/\./, $path, 2);
+        $firstElement ||= "";
+        $rest ||= "";
         if ($firstElement =~ /([a-zA-Z0-9_\@]+)\(/) {
             my $key = $1;
             my $element = quotemeta($key."(");
@@ -374,7 +376,7 @@ sub sort {
 sub truncateStringToLength {
     my ( $self, $value, $length ) = @_;
     # this is a cheesy truncator
-    if (length($value) > $length) {
+    if (CORE::length($value) > $length) {
         return substr($value, 0, $length)."...";
     }
     return $value;
@@ -508,7 +510,8 @@ sub disableCache {
 
 sub new {
     my ( $class, $key ) = @_;
-    if ( $_KEY_CACHE && exists $_KEY_CACHE->{$key} ) {
+    $key ||= "";
+    if ( $_KEY_CACHE && $key && exists $_KEY_CACHE->{$key} ) {
         return $_KEY_CACHE->{$key};
     }
 
@@ -518,8 +521,8 @@ sub new {
     my ( $trailingUnderscores ) = $key =~ /(_+)$/;
     my $self = bless {
         parts => $parts,
-        leadingUnderscores => $leadingUnderscores,
-        trailingUnderscores => $trailingUnderscores,
+        leadingUnderscores => $leadingUnderscores || "",
+        trailingUnderscores => $trailingUnderscores || "",
     }, $class;
     if ( $_KEY_CACHE ) {
         $_KEY_CACHE->{$key} = $self;
@@ -552,6 +555,7 @@ sub __normalise {
 
 sub __camelCase {
     my ( $parts ) = @_;
+    $parts ||= [];
     if ( $parts->[0] =~ /^[A-Z0-9]+$/ ) {
         return __titleCase( $parts );
     }

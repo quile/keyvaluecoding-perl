@@ -1,1 +1,1 @@
-This project now has its own [http://quile.github.com/keyvaluecoding-perl/](fancypants page).
+This project now has its own [fancypants page](http://quile.github.com/keyvaluecoding-perl/).

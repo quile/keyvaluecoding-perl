@@ -357,18 +357,18 @@ sub length {
 
 sub keys {
     my ( $self, $value ) = @_;
-    if (__isDictionary($value)) {
+    if (__isHash($value)) {
         return [keys %$value];
     }
     return [];
 }
 
-sub reverse {
+sub reversed {
     my ( $self, $list ) = @_;
     return [reverse @$list];
 }
 
-sub sort {
+sub sorted {
     my ( $self, $list ) = @_;
     return [sort @$list];
 }
@@ -621,10 +621,12 @@ Object::KeyValueCoding - Perl implementation of Key-Value Coding
  print $o->valueForKey("bar");
  quux
 
+See more complex examples below.
+
 
 =head1 VERSION
 
-    0.1
+    0.2
 
 
 =head1 FEATURES

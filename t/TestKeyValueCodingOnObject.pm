@@ -28,6 +28,14 @@ sub test_object_properties : Tests {
     ok( $obj->valueForKey( "_s(donne.john)" ) eq "JONNY", "JONNY" );
 }
 
+sub test_additions : Tests {
+    my ( $self ) = @_;
+    my $obj = $self->{obj};
+    is_deeply( $obj->valueForKey( "sorted(taylorColeridge)" ), [ "kublai khan", "samuel", "xanadu" ], "sorted" );
+    is_deeply( $obj->valueForKey( "reversed(sorted(taylorColeridge))" ), [ "xanadu", "samuel", "kublai khan" ], "reversed" );
+    is_deeply( $obj->valueForKey( "sorted(keys(donne))" ), [ "bruce", "john" ], "sorted keys" );
+}
+
 #
 # sub test_array : Tests {
 #     var a = [];
@@ -65,6 +73,8 @@ sub chaucer {
 
 sub bacon    { return $_[0]->{bacon} }
 sub setBacon { $_[0]->{bacon} = $_[1] }
+
+sub taylorColeridge { return [ "samuel", "xanadu", "kublai khan" ] }
 
 sub _s {
     my ( $self, $value ) = @_;

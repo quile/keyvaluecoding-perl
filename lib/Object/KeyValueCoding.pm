@@ -80,7 +80,7 @@ Object::KeyValueCoding - Perl implementation of Key-Value Coding
  use Object::KeyValueCoding;
 
  package Foo;
- use base qw( Bar Object::KeyValueCoding );
+ use Object::KeyValueCoding;
 
  ...
 

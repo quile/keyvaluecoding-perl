@@ -35,7 +35,7 @@ package _PlainMooseThing;
 use common::sense;
 
 use Moose;
-use base 'Object::KeyValueCoding';
+use Object::KeyValueCoding;
 
 has bacon       => ( is => "rw", isa => "Str", );
 has shakespeare => ( is => "rw", isa => "Str", );

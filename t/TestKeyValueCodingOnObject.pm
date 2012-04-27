@@ -10,7 +10,7 @@ use Test::More;
 
 sub setUp : Test(startup) {
     my ( $self ) = @_;
-    $self->{obj} = _TestThing->new();
+    $self->{obj} = _ObjectTestThing->new();
     $self->{obj}->setValueForKey( "william", "shakespeare" );
 }
 
@@ -31,28 +31,15 @@ sub test_object_properties : Tests {
 sub test_additions : Tests {
     my ( $self ) = @_;
     my $obj = $self->{obj};
+    $DB::single = 1;
     is_deeply( $obj->valueForKey( "sorted(taylorColeridge)" ), [ "kublai khan", "samuel", "xanadu" ], "sorted" );
     is_deeply( $obj->valueForKey( "reversed(sorted(taylorColeridge))" ), [ "xanadu", "samuel", "kublai khan" ], "reversed" );
     is_deeply( $obj->valueForKey( "sorted(keys(donne))" ), [ "bruce", "john" ], "sorted keys" );
 }
 
-#
-# sub test_array : Tests {
-#     var a = [];
-#     a[0] = [CPDictionary dictionaryWithJSObject:{ 'wordsworth': 'william', 'keats': ['phil', 'bruce', 'andy', 'john'] }];
-#     a[1] = ["samuel", "pepys", [ 1633, 1703 ]];
-#
-#     [self assert:[a valueForKey:"@0.wordsworth"] equals:"william"];
-#     [self assert:[a valueForKey:"@0.keats.@3"] equals:"john"];
-#     [self assert:[a valueForKey:"@1.@2.@0"] equals:1633];
-#     [self assert:[a valueForKey:"@0.keats.#"] equals:4];
-#     [self assert:[a valueForKey:"@1.@2.#"] equals:2];
-# }
+package _ObjectTestThing;
 
-
-package _TestThing;
-
-use base qw( Object::KeyValueCoding );
+use Object::KeyValueCoding additions => 1;
 
 sub new {
     my ( $class ) = @_;

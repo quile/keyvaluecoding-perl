@@ -77,8 +77,6 @@ Object::KeyValueCoding - Perl implementation of Key-Value Coding
 
 =head1 SYNOPSIS
 
- use Object::KeyValueCoding;
-
  package Foo;
  use Object::KeyValueCoding;
 

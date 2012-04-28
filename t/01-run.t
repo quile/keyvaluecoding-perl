@@ -6,13 +6,24 @@ use lib '../lib';
 
 
 use TestKeyValueCoding;
-use TestKeyValueCodingOnObject;
 use TestKeyValueCodingSimple;
+use TestKeyValueCodingOnPlainObject;
 use TestKeyValueCodingUniversal;
 BEGIN {
-    my $hasMoose = eval { require Moose };
+    eval { require Moose };
     unless ($@) {
         eval "use TestKeyValueCodingOnMooseObject";
+        print STDERR "Detected Moose, loading...\n";
+    }
+    eval { require Moo };
+    unless ($@) {
+        eval "use TestKeyValueCodingOnMooObject";
+        print STDERR "Detected Moo, loading...\n";
+    }
+    eval { require Mouse };
+    unless ($@) {
+        eval "use TestKeyValueCodingOnMouseObject";
+        print STDERR "Detected Mouse, loading...\n";
     }
 }
 

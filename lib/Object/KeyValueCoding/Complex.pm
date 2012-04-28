@@ -26,7 +26,7 @@ sub implementation {
                 return $__KEY_VALUE_CODING->{__setValueForKeyPath}->($self, $value, $key);
             }
 
-            foreach my $setMethodName (@{ $__KEY_VALUE_CODING->{__setterKeyList}->() }) {
+            foreach my $setMethodName (@{ $__KEY_VALUE_CODING->{__setterKeyList}->($self, $key) }) {
                 if ($self->can($setMethodName)) {
                     return $self->$setMethodName($value);
                 }

@@ -4,8 +4,6 @@ Object::KeyValueCoding - Perl implementation of Key-Value Coding
 
 # SYNOPSIS
 
-    use Object::KeyValueCoding;
-
     package Foo;
     use Object::KeyValueCoding;
 

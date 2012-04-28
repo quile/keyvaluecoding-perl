@@ -8,6 +8,7 @@ use lib '../lib';
 use TestKeyValueCoding;
 use TestKeyValueCodingOnObject;
 use TestKeyValueCodingSimple;
+use TestKeyValueCodingUniversal;
 BEGIN {
     my $hasMoose = eval { require Moose };
     unless ($@) {

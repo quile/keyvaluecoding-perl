@@ -1,6 +1,7 @@
 package TestKeyValueCodingUniversal;
 
 use strict;
+use warnings;
 
 # This rather salacious line adds key-value coding to
 # every class in the system.
@@ -34,6 +35,9 @@ sub test_object_properties : Tests {
 
 # Note that KeyValueCoding is not mentioned here at all:
 package _UniversalTestThing;
+
+use strict;
+use warnings;
 
 sub new {
     my ( $class ) = @_;

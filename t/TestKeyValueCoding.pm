@@ -11,8 +11,6 @@ use Test::Exception;
 use Data::Dumper;
 use Object::KeyValueCoding cache_keys => 1, implementation => "Complex";
 
-my $gooo = "huh";
-
 sub test_names : Test(42) {
     my ($self) = @_;
 
@@ -31,7 +29,6 @@ sub test_names : Test(42) {
 
     foreach my $key (keys %$NAME_MAP) {
         my $value = Object::KeyValueCoding::Key->new( $key );
-        $DB::single = 1;
         is_deeply($NAME_MAP->{$key}, $value->{parts}, "normalised $key");
     }
 

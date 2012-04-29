@@ -1,6 +1,7 @@
 package TestKeyValueCodingOnMouseObject;
 
-use common::sense;
+use strict;
+use warnings;
 
 use strict;
 use base qw(
@@ -13,7 +14,8 @@ sub obj { return $_[0]->{obj} ||= _MouseTestThing->new() }
 
 package _MouseTestThing;
 
-use common::sense;
+use strict;
+use warnings;
 
 use Mouse;
 use Object::KeyValueCoding additions => 1;

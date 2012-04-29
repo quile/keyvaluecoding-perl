@@ -1,6 +1,7 @@
 package TestKeyValueCodingOnMooseObject;
 
-use common::sense;
+use strict;
+use warnings;
 
 use strict;
 use base qw(
@@ -13,7 +14,8 @@ sub obj { return $_[0]->{obj} ||= _MooseTestThing->new() }
 
 package _MooseTestThing;
 
-use common::sense;
+use strict;
+use warnings;
 
 use Moose;
 use Object::KeyValueCoding additions => 1;

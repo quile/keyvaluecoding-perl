@@ -1,6 +1,7 @@
 package TestKeyValueCodingSimple;
 
 use strict;
+use warnings;
 
 use base qw(
     Test::Class

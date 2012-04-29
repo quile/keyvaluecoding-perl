@@ -1,6 +1,7 @@
 package TestKeyValueCodingOnPlainObject;
 
 use strict;
+use warnings;
 
 use base qw(
     TestKeyValueCodingOnObject
@@ -11,6 +12,9 @@ use Test::More;
 sub obj { return $_[0]->{obj} ||= _ObjectTestThing->new() }
 
 package _ObjectTestThing;
+
+use strict;
+use warnings;
 
 use Object::KeyValueCoding additions => 1;
 

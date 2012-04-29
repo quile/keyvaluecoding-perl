@@ -101,6 +101,14 @@ you could conceivably use it to install key-value coding system-wide:
 Purists' heads might explode at this idea, but it's not so strange - it's
 essentially how the NSKeyValueCoding "category" works in Objective-C.
 
+## Moose
+
+If you're using Moose, you might prefer to use Object::KeyValueCoding::Role,
+which will do what it's supposed to and add the key-value coding methods
+into your class.
+
+
+
 
 
 # METHODS

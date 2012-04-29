@@ -3,9 +3,11 @@ package Object::KeyValueCoding::Complex;
 use strict;
 
 use Object::KeyValueCoding::Additions;
+use Object::KeyValueCoding::Key;
 
 use Carp         qw( croak   );
 use Scalar::Util qw( reftype );
+use List::MoreUtils qw( uniq );
 
 sub implementation {
     my ( $class, @opts ) = @_;
@@ -26,7 +28,13 @@ sub implementation {
                 return $__KEY_VALUE_CODING->{__setValueForKeyPath}->($self, $value, $key);
             }
 
-            foreach my $setMethodName (@{ $__KEY_VALUE_CODING->{__setterKeyList}->($self, $key) }) {
+            my $keyList = $__KEY_VALUE_CODING->{__setterKeyList}->($self, $key);
+            if ( $key !~ /^_/ ) {
+                push @$keyList, @{ $__KEY_VALUE_CODING->{__setterKeyList}->($self, "_$key") };
+            }
+            $keyList = [ uniq @$keyList ];
+
+            foreach my $setMethodName ( @$keyList ) {
                 if ($self->can($setMethodName)) {
                     return $self->$setMethodName($value);
                 }
@@ -48,6 +56,7 @@ sub implementation {
             if ( $key !~ /^_/ ) {
                 push @$keyList, @{ $__KEY_VALUE_CODING->{__accessorKeyList}->($self, "_$key") };
             }
+            $keyList = [ uniq @$keyList ];
 
             foreach my $testKey (@$keyList) {
                 my $getMethodName = $testKey;

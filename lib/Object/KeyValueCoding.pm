@@ -302,22 +302,13 @@ Note that the arguments themselves can be arbitrarily long key-paths.
 
 =over
 
-=item * Better support for Moose
+=item * Better support for Moose/Mouse
 
 Since Moose is pretty much the defacto way now of doing OO
-in Perl, KVC should detect Moose and play nicer with it.  It means
-that it could use the Class::MOP features to perform attribute
-manipulation, so that will be fun.
-
-=item * Error handling
-
-Right now you're on your own to test for errors and trap explosions.
-
-=item * Bulletproofing
-
-There are lots of cases that could have slipped through the cracks, so it
-will need some cleaning up and bulletproofing to harden it a bit.
-
+in Perl, KVC should detect Moose and play nicer with it. The 1.0
+release of this package will include support for Moose/Mouse
+by using Class::MOP to perform introspection on objects and
+access attributes.
 
 
 =back

@@ -1,6 +1,6 @@
 package Object::KeyValueCoding;
 
-our $VERSION = "0.9.1";
+our $VERSION = "0.9.9";
 
 use Object::KeyValueCoding::Key;
 use Object::KeyValueCoding::Complex;
@@ -93,7 +93,7 @@ See more complex examples below.
 
 =head1 VERSION
 
-    0.9.1
+    0.9.2
 
 
 =head1 FEATURES

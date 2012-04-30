@@ -21,7 +21,7 @@ See more complex examples below.
 
 # VERSION
 
-    0.9.1
+    0.9.2
 
 
 

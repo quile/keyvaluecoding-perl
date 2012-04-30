@@ -1,5 +1,7 @@
 package Object::KeyValueCoding::Key;
 
+our $VERSION = "0.9.2";
+
 use strict;
 
 my $_KEY_CACHE = undef;

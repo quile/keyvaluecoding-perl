@@ -1,6 +1,6 @@
 package Object::KeyValueCoding;
 
-our $VERSION = "0.9";
+our $VERSION = "0.9.1";
 
 use Object::KeyValueCoding::Key;
 use Object::KeyValueCoding::Complex;
@@ -93,7 +93,7 @@ See more complex examples below.
 
 =head1 VERSION
 
-    0.9
+    0.9.1
 
 
 =head1 FEATURES
@@ -331,7 +331,7 @@ Please report bugs to E<lt>info[at]kyledawkins.comE<gt>.
 
 =head1 CONTRIBUTING
 
-The github repository is at https://quile@github.com/quile/keyvaluecoding-perl.git
+The github repository is at git://github.com/quile/keyvaluecoding-perl.git
 
 
 =head1 SEE ALSO

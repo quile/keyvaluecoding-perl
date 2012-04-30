@@ -21,7 +21,7 @@ See more complex examples below.
 
 # VERSION
 
-    0.9
+    0.9.1
 
 
 
@@ -262,7 +262,7 @@ Please report bugs to <info[at]kyledawkins.com>.
 
 # CONTRIBUTING
 
-The github repository is at https://quile@github.com/quile/keyvaluecoding-perl.git
+The github repository is at git://github.com/quile/keyvaluecoding-perl.git
 
 
 

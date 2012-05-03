@@ -21,7 +21,7 @@ See more complex examples below.
 
 # VERSION
 
-    0.9.2
+    0.93
 
 
 
@@ -241,6 +241,12 @@ release of this package will include support for Moose/Mouse
 by using Class::MOP to perform introspection on objects and
 access attributes.
 
+- Allow consumer to specify naming conventions
+
+So when you attach KVC methods, you can specify if they're
+value_for_key or valueForKey.  Also, so the consumer can
+tell the KVC system how accessors are named.
+
 
 
 # HISTORY
@@ -258,7 +264,7 @@ an OO implementation like Moose.
 
 # BUGS
 
-Please report bugs to <info[at]kyledawkins.com>.
+Please report bugs to info[at]kyledawkins.com.
 
 # CONTRIBUTING
 

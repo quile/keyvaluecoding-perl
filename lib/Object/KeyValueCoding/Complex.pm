@@ -108,7 +108,7 @@ sub implementation {
             if ( $object->can( $key ) ) {
                 return $object->$key(@{ $keyPathElement->{argumentValues} });
             }
-            if ( $key eq "valueForKey" ) {
+            if ( $key eq "valueForKey" ||$key eq "value_for_key") {
                 return $__KEY_VALUE_CODING->{__valueForKeyOnObject}->( $keyPathElement->{argumentValues}->[0], $object );
             }
             if ( $__KEY_VALUE_ADDITIONS->{$key} ) {
@@ -123,6 +123,10 @@ sub implementation {
             return undef unless ref ($object);
             if (UNIVERSAL::can($object, "valueForKey")) {
                 return $object->valueForKey($key);
+            }
+            # somewhat lame
+            if (UNIVERSAL::can($object, "value_for_key")) {
+                return $object->value_for_key($key);
             }
             if ($__KEY_VALUE_CODING->{__isHash}->($object)) {
                 my $keyList = $__KEY_VALUE_CODING->{__accessorKeyList}->($object, $key);
@@ -161,6 +165,10 @@ sub implementation {
             return undef unless ref ($object);
             if (UNIVERSAL::can($object, "setValueForKey")) {
                 $object->setValueForKey($value, $key);
+                return;
+            }
+            if (UNIVERSAL::can($object, "set_value_for_key")) {
+                $object->set_value_for_key($value, $key);
                 return;
             }
             if ($__KEY_VALUE_CODING->{__isHash}->($object)) {
@@ -379,7 +387,7 @@ sub implementation {
                 my $value = "";
 
                 if ($__KEY_VALUE_CODING->{__expressionIsKeyPath}->($keyValuePath)) {
-                    $value = $self->valueForKeyPath($keyValuePath);
+                    $value = $__KEY_VALUE_CODING->{__valueForKeyPath}->($self, $keyValuePath);
                 } else {
                     $value = eval "$keyValuePath"; # yikes, dangerous!
                 }

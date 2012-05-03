@@ -9,6 +9,7 @@ use TestKeyValueCodingSimple;
 use TestKeyValueCodingOnPlainObject;
 use TestKeyValueCodingUniversal;
 use TestKeyValueCodingInheritance;
+use TestKeyValueCodingNaming;
 
 BEGIN {
     eval { require Moose };

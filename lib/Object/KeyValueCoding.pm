@@ -1,11 +1,10 @@
 package Object::KeyValueCoding;
 
-our $VERSION = "0.9.9";
+our $VERSION = "0.92";
 
 use Object::KeyValueCoding::Key;
 use Object::KeyValueCoding::Complex;
 use Object::KeyValueCoding::Simple;
-use Data::Dumper;
 
 use strict;
 
@@ -39,19 +38,35 @@ sub import {
     }
 
     # These are the only methods from all of the above that get exposed to the outside world.
-    my $__exports = {
-        valueForKey        => $implementation->{__valueForKey},
-        valueForKeyPath    => $implementation->{__valueForKeyPath},
-        setValueForKey     => $implementation->{__setValueForKey},
-        setValueForKeyPath => $implementation->{__setValueForKeyPath},
-        accessorKeyList    => $implementation->{__accessorKeyList},
-        setterKeyList      => $implementation->{__setterKeyList},
-        stringWithEvaluatedKeyPathsInLanguage => $implementation->{__stringWithEvaluatedKeyPathsInLanguage},
-    };
+    my $__exports;
+
+    if ( $options->{naming_convention} =~ m/underscore/ ) {
+        $__exports = {
+            value_for_key          => $implementation->{__valueForKey},
+            value_for_key_path     => $implementation->{__valueForKeyPath},
+            set_value_for_key      => $implementation->{__setValueForKey},
+            set_value_for_key_path => $implementation->{__setValueForKeyPath},
+            accessor_key_list      => $implementation->{__accessorKeyList},
+            setter_key_list        => $implementation->{__setterKeyList},
+            string_with_evaluated_key_paths_in_language => $implementation->{__stringWithEvaluatedKeyPathsInLanguage},
+        };
+    } else {
+        $__exports = {
+            valueForKey        => $implementation->{__valueForKey},
+            valueForKeyPath    => $implementation->{__valueForKeyPath},
+            setValueForKey     => $implementation->{__setValueForKey},
+            setValueForKeyPath => $implementation->{__setValueForKeyPath},
+            accessorKeyList    => $implementation->{__accessorKeyList},
+            setterKeyList      => $implementation->{__setterKeyList},
+            stringWithEvaluatedKeyPathsInLanguage => $implementation->{__stringWithEvaluatedKeyPathsInLanguage},
+        };
+    }
+
 
     no strict 'refs';
+    no warnings;
     foreach my $method (keys %{$__exports}) {
-        next unless $method;
+        next unless $__exports->{$method};
         *{ $target.'::'.$method } = $__exports->{$method};
     }
 
@@ -93,7 +108,7 @@ See more complex examples below.
 
 =head1 VERSION
 
-    0.9.2
+    0.92
 
 
 =head1 FEATURES
@@ -310,6 +325,12 @@ release of this package will include support for Moose/Mouse
 by using Class::MOP to perform introspection on objects and
 access attributes.
 
+=item * Allow consumer to specify naming conventions
+
+So when you attach KVC methods, you can specify if they're
+value_for_key or valueForKey.  Also, so the consumer can
+tell the KVC system how accessors are named.
+
 
 =back
 
@@ -327,7 +348,7 @@ an OO implementation like Moose.
 
 =head1 BUGS
 
-Please report bugs to E<lt>info[at]kyledawkins.comE<gt>.
+Please report bugs to info[at]kyledawkins.com.
 
 =head1 CONTRIBUTING
 

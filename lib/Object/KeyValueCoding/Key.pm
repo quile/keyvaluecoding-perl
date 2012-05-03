@@ -1,6 +1,6 @@
 package Object::KeyValueCoding::Key;
 
-our $VERSION = "0.92";
+our $VERSION = "0.93";
 
 use strict;
 

@@ -40,7 +40,9 @@ sub import {
     # These are the only methods from all of the above that get exposed to the outside world.
     my $__exports;
 
-    if ( $options->{naming_convention} =~ m/underscore/ ) {
+    my $namingConvention = $options->{namingConvention} || $options->{naming_convention};
+
+    if ( $namingConvention =~ m/underscore/ ) {
         $__exports = {
             value_for_key          => $implementation->{__valueForKey},
             value_for_key_path     => $implementation->{__valueForKeyPath},

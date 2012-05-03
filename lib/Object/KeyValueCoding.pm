@@ -363,7 +363,7 @@ Some other stuff.
 
 =head1 AUTHOR
 
-Kyle Dawkins, E<lt>info[at]kyledawkins.comE<gt>
+Kyle Dawkins, info[at]kyledawkins.com
 
 
 =head1 COPYRIGHT AND LICENSE

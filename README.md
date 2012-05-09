@@ -21,7 +21,7 @@ See more complex examples below.
 
 # VERSION
 
-    0.93
+    0.94
 
 
 

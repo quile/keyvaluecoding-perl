@@ -1,0 +1,253 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Keyvaluecoding-perl by quile</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Keyvaluecoding-perl</h1>
+        <p>Perl implementation of NSKeyValueCoding category</p>
+        <p class="view"><a href="https://github.com/quile/keyvaluecoding-perl">View the Project on GitHub <small>quile/keyvaluecoding-perl</small></a></p>
+        <ul>
+          <li><a href="https://github.com/quile/keyvaluecoding-perl/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/quile/keyvaluecoding-perl/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/quile/keyvaluecoding-perl">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>Object::KeyValueCoding</h2>
+
+<p>One of the greatest things about developing using the NeXT/Apple toolchain
+is the consistent use of something called key-value coding.  It's the kind
+of thing that, once you buy into its philosophy, will suddenly make a whole
+slew of things easier for you in ways that you never thought of before.
+Every time I move to a new platform, be it Python or Javascript or Perl,
+I always find myself frustrated by its absence, and find myself jumping
+through all kinds of stupid hoops just to do things that would be dead-simple
+if key-value coding were available to me.</p>
+
+<p>So here is a Perl implementation of KVC that you can
+glom onto your objects, or even glom onto everything in your system,
+and KVC will be available in all its glory (well, some of its glory...
+see below).</p>
+
+<p>(Note: there's also an almost-identical Javascript implementation of
+key-value coding <a href="http://quile.github.com/keyvaluecoding-js/">here</a>.)</p>
+
+<h3>Installing</h3>
+
+<p>The recommended way to install this module is to use cpanm:</p>
+
+<pre><code>cpanm Object::KeyValueCoding
+</code></pre>
+
+<p>although you can also download it from <a href="https://github.com/quile/keyvaluecoding-js">github</a> if you want the bleeding edge.</p>
+
+<h3>Usage</h3>
+
+<p>If you just do this in a class:</p>
+
+<pre><code>use Object::KeyValueCoding;
+</code></pre>
+
+<p>it will add key-value coding methods to that class.  You don't
+need to fiddle with your inheritance.  Subclasses of your class will
+inherit key-value coding methods.</p>
+
+<p>At present, you can choose between two different implementations, "simple",
+(which only implements the very basics of key-value coding and key-path
+traversal) or "complex" (which has much more powerful object graph traversal
+capabilities).  You can do it like this:</p>
+
+<pre><code>use Object::KeyValueCoding implementation =&gt; "simple";
+</code></pre>
+
+<p>If you don't indicate an implementation, the default ("complex") will be
+used.</p>
+
+<p>You can also add the optional "additions" (see below) like this:</p>
+
+<pre><code>use Object::KeyValueCoding additions =&gt; 1;
+</code></pre>
+
+<p>which will add a number of helper methods into the resolution chain
+of the "complex" implementation.</p>
+
+<p>You can also indicate a "target", which is the name of a class in
+which to install key-value coding.  You will generally not use this, but
+you could conceivably use it to install key-value coding system-wide:</p>
+
+<pre><code>use Object::KeyValueCoding target =&gt; "UNIVERSAL";
+</code></pre>
+
+<p>Purists' heads might explode at this idea, but it's not so strange - it's
+essentially how the NSKeyValueCoding "category" works in Objective-C.</p>
+
+<h3>Methods</h3>
+
+<p>All implementations of KVC must support these methods:</p>
+
+<pre><code>valueForKey( &lt;key&gt; )
+valueForKeyPath( &lt;keypath&gt; )
+setValueForKey( &lt;value&gt;, &lt;key&gt; )
+setValueForKeyPath( &lt;value&gt;, &lt;keypath&gt; )
+</code></pre>
+
+<p>Any KVC-aware objects will now respond to those methods.
+( Note: the difference between a key-path and a key is that a key-path can
+be an arbitrarily long dot-path of keys ).</p>
+
+<p>Here is an example session that should show how it works:</p>
+
+<pre><code>    &gt; re.pl
+    $ package Foo;
+      use base qw( Object::KeyValueCoding );
+      sub new { return bless $_[1] }
+    $ my $foo = Foo-&gt;new({ bar =&gt; "This is foo.bar",
+                           baz =&gt; { quux =&gt; "This is foo.baz.quux",
+                           bonk =&gt; [ 'This is foo.baz.bonk.@0', 'This is foo.baz.bonk.@1' ]
+                       }});
+    Foo=HASH(0x1020576c0);
+    $ $foo-&gt;valueForKey("bar")
+    This is foo.bar
+    $ $foo-&gt;valueForKeyPath("baz.quux")
+    This is foo.baz.quux
+    $ $foo-&gt;valueForKeyPath('baz.bonk.@1')
+    This is foo.baz.bonk.@1
+    $
+</code></pre>
+
+<p>If a function is found rather than a property, it will
+be called in the context of the object it belongs to:</p>
+
+<pre><code>    sub Foo::bing {
+        return [ 'This is foo.bing.@0', 'and this is foo.bing.@1' ];
+    }
+    $ $foo-&gt;valueForKey('bing.@1')
+    'and this is foo.bing.@1'
+    $
+</code></pre>
+
+<p>The implementation allows nested key-paths, which are turned into arguments:</p>
+
+<pre><code>    $ sub Foo::bong { my ($self, $bung) = @_; return uc($bung) }
+    $ $foo-&gt;valueForKey("baz.quux")
+    This is foo.baz.quux
+    $ $foo-&gt;valueForKey("bong(baz.quux)")
+    THIS IS FOO.BAZ.QUUX
+    $ $foo-&gt;valueForKey("self.bong(self.baz.quux)")
+    THIS IS FOO.BAZ.QUUX
+    $
+</code></pre>
+
+<p>See how it traverses the object graph from one related object to another:</p>
+
+<pre><code>    $ package Goo; use base qw( Object::KeyValueCoding ); sub new { bless $_[1] }
+    $ my $goo = Goo-&gt;new({ something =&gt; $foo, name =&gt; "I'm called Goo!" });
+    Goo=HASH(0x1020763d8);
+    $ $goo-&gt;valueForKey("something.bong(name)")
+    I'M CALLED GOO!
+    $ $goo-&gt;valueForKey("something.bong(self.name)")
+    I'M CALLED GOO!
+    $ $goo-&gt;valueForKey("self.something.bong(self.name)")
+    I'M CALLED GOO!
+    $
+</code></pre>
+
+<p>The corresponding <code>set</code> methods, <code>setValueForKey</code> and <code>setValueForKeyPath</code>
+will set the value on whatever object the key/keypath resolves to.
+If any part of the key or keypath returns <em>null</em>, the call will
+(at present) fail silently.  <strong>NOTE:</strong> This is not the same behaviour
+as Apple's NSKeyValueCoding; it's a bit more like the Clojure
+"thread" operator (-&gt;&gt;).</p>
+
+<h3>Additions</h3>
+
+<p>The implementation has some optional "additions" that you can use.
+What are these "additions"?  They provide a number of "special" methods
+that can be used in keypaths:</p>
+
+<pre><code>    eq(a, b)
+    not( a )
+    and( a, b )
+    or( a, b )
+    commaSeparatedList( a )
+    truncateStringToLength( a, l )
+    sorted( a )
+    reversed( a )
+    keys( a )
+    length( a )
+    int( a )
+</code></pre>
+
+<p>For example:</p>
+
+<pre><code>    $ my $goo = Goo-&gt;new({ a =&gt; 1, b =&gt; 0, c =&gt; 0 });
+    Goo=HASH(0x1020633d0);
+    $ $goo-&gt;valueForKey("and(a, b)")
+    0
+    $ $goo-&gt;valueForKey("or(a, b)")
+    1
+    $ $goo-&gt;valueForKey("or(b, c)")
+    0
+    $
+</code></pre>
+
+<p>Note that the arguments themselves can be arbitrarily long key-paths.</p>
+
+<h3>TODO</h3>
+
+<ul>
+<li><p>Better support for Moose - Since Moose is pretty much the defacto way now of doing OO
+in Perl, KVC should detect Moose and play nicer with it.  It means
+that it could use the Class::MOP features to perform attribute
+manipulation, so that will be fun.</p></li>
+<li><p>Error handling - Right now you're on your own to test for errors and trap explosions.</p></li>
+<li><p>Bulletproofing - There are lots of cases that could have slipped through the cracks, so it
+will need some cleaning up and bulletproofing to harden it a bit.</p></li>
+</ul><h3>History</h3>
+
+<p>This implementation originated as part of the Idealist Framework
+(<a href="https://github.com/quile/if-framework">https://github.com/quile/if-framework</a>) over 10 years
+ago.  It was loosely based on the NSKeyValueCoding protocol found
+on NeXTStep/OpenStep (at that time) and now Cocoa/iOS.  This is the
+reason why the code is a bit hairy - its very old (predating pretty much
+every advance in Perl...).  But that works in its favour, because it
+means it will work well with most Perl objects and isn't bound to
+an OO implementation like Moose.</p>
+
+<h3>See Also</h3>
+
+<p><a href="http://quile.github.com/keyvaluecoding-js/">Near-identical Javascript Implementation</a></p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/quile">quile</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-30714478-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
